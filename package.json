@@ -13,6 +13,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@vueuse/core": "^11.0.0",
     "monaco-editor": "^0.50.0",
     "vue": "^3.4.29",
     "vue-router": "^4.3.3"
