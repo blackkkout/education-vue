@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { useLocalStorage, useDebounceFn } from '@vueuse/core'
+import { useDebounceFn } from '@vueuse/core'
+import { storeToRefs } from 'pinia'
 import * as monaco from 'monaco-editor'
+import { useCodeStore } from '@/store/code'
 
 const { language } = defineProps<{
   language: string
@@ -11,7 +13,9 @@ const editorContainer = ref(null)
 let editor: monaco.editor.IStandaloneCodeEditor
 const output = ref('')
 
-const code = useLocalStorage(`code-${language}`, '')
+const codeStore = useCodeStore()
+const { code } = storeToRefs(codeStore)
+const { setCode } = codeStore
 
 const initializeEditor = () => {
   if (editorContainer.value) {
@@ -27,7 +31,7 @@ const initializeEditor = () => {
 
     editor.onDidChangeModelContent(
       useDebounceFn(() => {
-        code.value = editor.getValue()
+        setCode(editor.getValue())
       }, 500)
     )
   }
